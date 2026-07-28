@@ -1,0 +1,391 @@
+{
+  "info": {
+    "_postman_id": "erp-crm-operations-portal-collection-2026",
+    "name": "Mini ERP + CRM Operations Portal API",
+    "description": "Complete REST API collection for Mini ERP + CRM Operations Portal covering Auth (4 roles), Customer CRM, Product Inventory & Stock Logs, and Sales Challans with snapshot pricing and atomic stock transaction logic.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication & Roles",
+      "item": [
+        {
+          "name": "Login as Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@company.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login as Sales",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sales@company.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login as Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"warehouse@company.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login as Accounts",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"accounts@company.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Authenticated Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Customer CRM Module",
+      "item": [
+        {
+          "name": "Get Customers (Search & Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers?search=Tech&status=ACTIVE&customerType=DISTRIBUTOR&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers"],
+              "query": [
+                { "key": "search", "value": "Tech" },
+                { "key": "status", "value": "ACTIVE" },
+                { "key": "customerType", "value": "DISTRIBUTOR" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Customer By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers", ":id"],
+              "variable": [{ "key": "id", "value": "customer_id_here" }]
+            }
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Siddharth Kapoor\",\n  \"mobileNumber\": \"+919811223344\",\n  \"email\": \"sid@nexuscorp.com\",\n  \"businessName\": \"Nexus Enterprise\",\n  \"gstNumber\": \"27AAAAA0000A1Z5\",\n  \"customerType\": \"WHOLESALE\",\n  \"address\": \"702 Tower B, Business Park, Pune\",\n  \"status\": \"ACTIVE\",\n  \"followUpDate\": \"2026-08-05T00:00:00.000Z\",\n  \"notes\": \"Initial enterprise contact.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\",\n  \"notes\": \"Updated account notes after client meeting.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers", ":id"],
+              "variable": [{ "key": "id", "value": "customer_id_here" }]
+            }
+          }
+        },
+        {
+          "name": "Add Customer Follow-up Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Sent revised bulk quotation proposal via email.\",\n  \"followUpDate\": \"2026-08-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/:id/follow-ups",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers", ":id", "follow-ups"],
+              "variable": [{ "key": "id", "value": "customer_id_here" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Product & Inventory Module",
+      "item": [
+        {
+          "name": "Get Products (With Low Stock Alert Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?search=&lowStockOnly=false&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "search", "value": "" },
+                { "key": "lowStockOnly", "value": "false" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product By ID (With Stock Logs)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", ":id"],
+              "variable": [{ "key": "id", "value": "product_id_here" }]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"USB-C Multiport Adapter 7-in-1\",\n  \"sku\": \"ADAPT-USBC-71\",\n  \"category\": \"Accessories\",\n  \"unitPrice\": 45.00,\n  \"currentStock\": 100,\n  \"minStockAlertQuantity\": 15,\n  \"locationWarehouse\": \"Rack-C4, West Warehouse\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unitPrice\": 42.50,\n  \"minStockAlertQuantity\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", ":id"],
+              "variable": [{ "key": "id", "value": "product_id_here" }]
+            }
+          }
+        },
+        {
+          "name": "Log Manual Stock Movement (IN or OUT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantityChanged\": 25,\n  \"movementType\": \"IN\",\n  \"reason\": \"Received fresh shipment batch #PO-2004\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/:id/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", ":id", "stock"],
+              "variable": [{ "key": "id", "value": "product_id_here" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Sales Challan Module",
+      "item": [
+        {
+          "name": "Get Sales Challans",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sales-challans?search=&status=&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sales-challans"],
+              "query": [
+                { "key": "search", "value": "" },
+                { "key": "status", "value": "" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Sales Challan By ID (With Snapshot Pricing)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sales-challans/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sales-challans", ":id"],
+              "variable": [{ "key": "id", "value": "challan_id_here" }]
+            }
+          }
+        },
+        {
+          "name": "Create Sales Challan (DRAFT or CONFIRMED)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"customer_id_here\",\n  \"status\": \"DRAFT\",\n  \"items\": [\n    {\n      \"productId\": \"product_id_here\",\n      \"quantity\": 2\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sales-challans",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sales-challans"]
+            }
+          }
+        },
+        {
+          "name": "Update Challan Status (Draft -> Confirmed -> Cancelled)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{jwtToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONFIRMED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sales-challans/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sales-challans", ":id", "status"],
+              "variable": [{ "key": "id", "value": "challan_id_here" }]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ]
+}
