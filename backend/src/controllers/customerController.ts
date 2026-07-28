@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../config/prisma';
-import { CustomerType, CustomerStatus } from '@prisma/client';
+import { CustomerType, CustomerStatus } from '../types/enums';
 
 /**
  * POST /api/customers
@@ -52,9 +52,9 @@ export const createCustomer = async (req: Request, res: Response) => {
         email: email.trim().toLowerCase(),
         businessName: businessName.trim(),
         gstNumber: gstNumber ? gstNumber.trim() : null,
-        customerType: customerType as CustomerType,
+        customerType,
         address: address.trim(),
-        status: (status as CustomerStatus) || CustomerStatus.LEAD,
+        status: status || CustomerStatus.LEAD,
         followUpDate: followUpDate ? new Date(followUpDate) : null,
         notes: notes ? notes.trim() : null,
       },
@@ -91,11 +91,11 @@ export const getCustomers = async (req: Request, res: Response) => {
     const where: any = {};
 
     if (status && Object.values(CustomerStatus).includes(status as CustomerStatus)) {
-      where.status = status as CustomerStatus;
+      where.status = status as string;
     }
 
     if (customerType && Object.values(CustomerType).includes(customerType as CustomerType)) {
-      where.customerType = customerType as CustomerType;
+      where.customerType = customerType as string;
     }
 
     if (search) {
@@ -222,9 +222,9 @@ export const updateCustomer = async (req: Request, res: Response) => {
         ...(email && { email: email.trim().toLowerCase() }),
         ...(businessName && { businessName: businessName.trim() }),
         ...(gstNumber !== undefined && { gstNumber: gstNumber ? gstNumber.trim() : null }),
-        ...(customerType && { customerType: customerType as CustomerType }),
+        ...(customerType && { customerType }),
         ...(address && { address: address.trim() }),
-        ...(status && { status: status as CustomerStatus }),
+        ...(status && { status }),
         ...(followUpDate !== undefined && { followUpDate: followUpDate ? new Date(followUpDate) : null }),
         ...(notes !== undefined && { notes: notes ? notes.trim() : null }),
       },

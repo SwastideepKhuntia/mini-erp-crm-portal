@@ -1,5 +1,6 @@
-import { PrismaClient, Role, CustomerType, CustomerStatus, StockMovementType, ChallanStatus } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { Role, CustomerType, CustomerStatus, StockMovementType, ChallanStatus } from '../src/types/enums';
 
 const prisma = new PrismaClient();
 
@@ -200,7 +201,6 @@ async function main() {
   console.log('✅ Seeded 3 Products (including Low Stock item for alert testing)');
 
   // 5. Seed Sales Challans
-  // Challan 1: Confirmed Challan (Stock deducted)
   const challan1 = await prisma.salesChallan.create({
     data: {
       challanNumber: 'CHN-20260728-0001',
@@ -221,7 +221,6 @@ async function main() {
     },
   });
 
-  // Challan 2: Draft Challan (Pending stock deduction)
   const challan2 = await prisma.salesChallan.create({
     data: {
       challanNumber: 'CHN-20260728-0002',

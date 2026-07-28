@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from './enums';
 
 export interface AuthUserPayload {
   id: string;

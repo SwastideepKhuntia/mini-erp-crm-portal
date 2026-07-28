@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/env';
 import { AuthUserPayload } from '../types/express';
-import { Role } from '@prisma/client';
+import { Role } from '../types/enums';
 
 /**
  * Middleware to verify JWT token in HTTP Authorization header.

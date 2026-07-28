@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../config/prisma';
-import { StockMovementType } from '@prisma/client';
+import { StockMovementType } from '../types/enums';
 
 /**
  * POST /api/products
@@ -107,13 +107,6 @@ export const getProducts = async (req: Request, res: Response) => {
         { category: { contains: query } },
         { locationWarehouse: { contains: query } },
       ];
-    }
-
-    // Low stock filter (currentStock <= minStockAlertQuantity)
-    if (lowStockOnly === 'true' || lowStockOnly === '1') {
-      // In Prisma SQL/SQLite, filter where currentStock <= minStockAlertQuantity
-      // Since raw Prisma fields comparison across columns requires raw or post-filter,
-      // we can handle low stock filtering via where raw or fetching all matching criteria.
     }
 
     let products = await prisma.product.findMany({
@@ -324,7 +317,7 @@ export const logStockMovement = async (req: Request, res: Response) => {
         data: {
           productId: id,
           quantityChanged: qty,
-          movementType: movementType as StockMovementType,
+          movementType,
           reason: reason.trim(),
           createdById: req.user!.id,
         },

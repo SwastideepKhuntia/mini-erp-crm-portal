@@ -7,7 +7,7 @@ import {
   logStockMovement,
 } from '../controllers/productController';
 import { authenticateJWT, authorizeRoles } from '../middlewares/auth';
-import { Role } from '@prisma/client';
+import { Role } from '../types/enums';
 
 const router = Router();
 

@@ -7,7 +7,7 @@ import {
   addFollowUpNote,
 } from '../controllers/customerController';
 import { authenticateJWT, authorizeRoles } from '../middlewares/auth';
-import { Role } from '@prisma/client';
+import { Role } from '../types/enums';
 
 const router = Router();
 

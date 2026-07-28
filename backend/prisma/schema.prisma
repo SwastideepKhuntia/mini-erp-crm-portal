@@ -1,5 +1,5 @@
 // Prisma Schema for Mini ERP + CRM Operations Portal
-// Defined strictly in adherence to the PDF assignment requirements.
+// Optimized for SQLite database compatibility.
 
 generator client {
   provider = "prisma-client-js"
@@ -10,42 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  SALES
-  WAREHOUSE
-  ACCOUNTS
-}
-
-enum CustomerType {
-  RETAIL
-  WHOLESALE
-  DISTRIBUTOR
-}
-
-enum CustomerStatus {
-  LEAD
-  ACTIVE
-  INACTIVE
-}
-
-enum StockMovementType {
-  IN
-  OUT
-}
-
-enum ChallanStatus {
-  DRAFT
-  CONFIRMED
-  CANCELLED
-}
-
 model User {
   id              String             @id @default(uuid())
   name            String
   email           String             @unique
   password        String
-  role            Role               @default(SALES)
+  role            String             @default("SALES")
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
 
@@ -61,9 +31,9 @@ model Customer {
   email        String
   businessName String
   gstNumber    String?
-  customerType CustomerType
+  customerType String
   address      String
-  status       CustomerStatus @default(LEAD)
+  status       String         @default("LEAD")
   followUpDate DateTime?
   notes        String?
   createdAt    DateTime       @default(now())
@@ -100,15 +70,15 @@ model Product {
 }
 
 model StockLog {
-  id              String            @id @default(uuid())
+  id              String   @id @default(uuid())
   productId       String
-  product         Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantityChanged Int
-  movementType    StockMovementType
+  movementType    String
   reason          String
   createdById     String
-  createdBy       User              @relation(fields: [createdById], references: [id])
-  timestamp       DateTime          @default(now())
+  createdBy       User     @relation(fields: [createdById], references: [id])
+  timestamp       DateTime @default(now())
 }
 
 model SalesChallan {
@@ -117,7 +87,7 @@ model SalesChallan {
   customerId    String
   customer      Customer           @relation(fields: [customerId], references: [id])
   totalQuantity Int
-  status        ChallanStatus      @default(DRAFT)
+  status        String             @default("DRAFT")
   createdById   String
   createdBy     User               @relation(fields: [createdById], references: [id])
   createdDate   DateTime           @default(now())
@@ -132,7 +102,6 @@ model SalesChallanItem {
   challan     SalesChallan @relation(fields: [challanId], references: [id], onDelete: Cascade)
   productId   String
   product     Product      @relation(fields: [productId], references: [id])
-  // Product snapshot fields captured at creation time
   productName String
   unitPrice   Float
   quantity    Int

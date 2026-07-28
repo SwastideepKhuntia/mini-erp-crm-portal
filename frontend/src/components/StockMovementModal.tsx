@@ -68,7 +68,7 @@ export const StockMovementModal: React.FC<StockMovementModalProps> = ({
           marginBottom: '1.25rem',
           border: '1px solid var(--border-color)',
           display: 'flex',
-          justify-content: 'space-between',
+          justifyContent: 'space-between',
         }}
       >
         <div>

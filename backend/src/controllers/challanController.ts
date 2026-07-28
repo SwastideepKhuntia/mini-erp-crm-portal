@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../config/prisma';
-import { ChallanStatus, StockMovementType } from '@prisma/client';
+import { ChallanStatus, StockMovementType } from '../types/enums';
 
 /**
  * Helper to generate auto-incremented or formatted Challan Number (e.g. CHN-20260728-1001)
@@ -216,7 +216,7 @@ export const getSalesChallans = async (req: Request, res: Response) => {
     const where: any = {};
 
     if (status && Object.values(ChallanStatus).includes(status as ChallanStatus)) {
-      where.status = status as ChallanStatus;
+      where.status = status as string;
     }
 
     if (customerId) {

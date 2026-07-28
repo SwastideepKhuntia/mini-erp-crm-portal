@@ -66,7 +66,7 @@ export const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, childre
             borderTop: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
-            justify-weight: 'space-between',
+            justifyContent: 'space-between',
             gap: '0.5rem',
           }}
         >
