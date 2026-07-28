@@ -3,6 +3,7 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes';
 import customerRoutes from './routes/customerRoutes';
 import productRoutes from './routes/productRoutes';
+import challanRoutes from './routes/challanRoutes';
 
 const app: Application = express();
 
@@ -20,6 +21,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/sales-challans', challanRoutes);
 
 // 404 Route Handler
 app.use((req: Request, res: Response) => {
