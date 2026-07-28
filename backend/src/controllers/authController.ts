@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import { prisma } from '../config/prisma';
 import { JWT_SECRET, JWT_EXPIRES_IN } from '../config/env';
 
@@ -38,6 +38,13 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
+    // Ensure secret exists and assign proper types for jsonwebtoken
+    const secretKey: Secret = (JWT_SECRET || 'fallback_secret') as Secret;
+
+    const signOptions: SignOptions = {
+      expiresIn: (JWT_EXPIRES_IN || '1d') as SignOptions['expiresIn'],
+    };
+
     // Generate JWT token containing user payload
     const token = jwt.sign(
       {
@@ -46,8 +53,8 @@ export const login = async (req: Request, res: Response) => {
         email: user.email,
         role: user.role,
       },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      secretKey,
+      signOptions
     );
 
     return res.status(200).json({

@@ -1,5 +1,6 @@
 import app from './app';
-import { PORT } from './config/env';
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Mini ERP + CRM Backend API listening on http://localhost:${PORT}`);
